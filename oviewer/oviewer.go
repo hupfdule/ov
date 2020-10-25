@@ -721,6 +721,18 @@ func (root *Root) countOr(i int) int {
 	}
 }
 
+func (root *Root) reRead() {
+	root.Doc.lines = nil
+	root.Doc.endNum = 0
+	err := root.Doc.ReadFile(root.Doc.FileName)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	root.Doc.ClearCache()
+	root.viewSync()
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a

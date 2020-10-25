@@ -48,6 +48,7 @@ const (
 	actionNextDoc        = "next_doc"
 	actionPreviousDoc    = "previous_doc"
 	actionToggleMouse    = "toggle_mouse"
+	actionReRead         = "reread"
 )
 
 func (root *Root) setHandler() map[string]func() {
@@ -88,6 +89,7 @@ func (root *Root) setHandler() map[string]func() {
 		actionNextDoc:        root.nextDoc,
 		actionPreviousDoc:    root.previousDoc,
 		actionToggleMouse:    root.toggleMouse,
+		actionReRead:         root.reRead,
 	}
 }
 
@@ -133,6 +135,7 @@ func GetKeyBinds(bind map[string][]string) map[string][]string {
 		actionNextDoc:        {"]"},
 		actionPreviousDoc:    {"["},
 		actionToggleMouse:    {"ctrl+alt+r"},
+		actionReRead:         {"R"},
 	}
 
 	for k, v := range bind {
