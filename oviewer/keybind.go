@@ -43,6 +43,7 @@ const (
 	actionHeader         = "header"
 	actionTabWidth       = "tabwidth"
 	actionGoLine         = "goto"
+	actionGoLineOrEnd    = "gotoOrEnd"
 	actionNextSearch     = "next_search"
 	actionNextBackSearch = "next_backsearch"
 	actionNextDoc        = "next_doc"
@@ -82,7 +83,8 @@ func (root *Root) setHandler() map[string]func() {
 		actionDelimiter:      root.setDelimiterMode,
 		actionHeader:         root.setHeaderMode,
 		actionTabWidth:       root.setTabWidthMode,
-		actionGoLine:         root.setGoLineMode,
+		actionGoLine:         root.setGoLine,
+		actionGoLineOrEnd:    root.setGoLineOrEnd,
 		actionNextSearch:     root.eventNextSearch,
 		actionNextBackSearch: root.eventNextBackSearch,
 		actionNextDoc:        root.nextDoc,
@@ -120,7 +122,7 @@ func GetKeyBinds(bind map[string][]string) map[string][]string {
 		actionWrap:           {"w", "W"},
 		actionColumnMode:     {"c"},
 		actionAlternate:      {"C"},
-		actionLineNumMode:    {"G"},
+		actionLineNumMode:    {"o"},
 		actionMark:           {"m"},
 		actionSearch:         {"/"},
 		actionBackSearch:     {"?"},
@@ -128,6 +130,7 @@ func GetKeyBinds(bind map[string][]string) map[string][]string {
 		actionHeader:         {"H"},
 		actionTabWidth:       {"t"},
 		actionGoLine:         {"g"},
+		actionGoLineOrEnd:    {"G"},
 		actionNextSearch:     {"n"},
 		actionNextBackSearch: {"N"},
 		actionNextDoc:        {"]"},
