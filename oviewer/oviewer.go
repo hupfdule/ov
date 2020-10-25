@@ -79,6 +79,9 @@ type Root struct {
 
 	// cancelKeys represents the cancellation key string.
 	cancelKeys []string
+
+	// count for a command
+	count int
 }
 
 type lineNumber struct {
@@ -698,6 +701,23 @@ func (root *Root) toggleMouse() {
 	} else {
 		root.Screen.EnableMouse()
 		root.setMessage("Enable Mouse")
+	}
+}
+
+func (root *Root) addToCount(i int) {
+	root.count = root.count*10 + i
+	root.setMessage(fmt.Sprintf("%d", root.count))
+}
+
+func (root *Root) resetCount() {
+	root.count = 0
+}
+
+func (root *Root) countOr(i int) int {
+	if root.count != 0 {
+		return root.count
+	} else {
+		return 1
 	}
 }
 
