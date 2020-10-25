@@ -266,5 +266,16 @@ func KeyBindString(k KeyBind) string {
 }
 
 func (k KeyBind) writeKeyBind(w io.Writer, action string, detail string) {
-	fmt.Fprintf(w, "  %-26s * %s\n", "["+strings.Join(k[action], "], [")+"]", detail)
+	shortened := shortenKeyBinds(k[action])
+	shortcuts := strings.Join(shortened, "], [")
+	fmt.Fprintf(w, "  %-26s * %s\n", "["+shortcuts+"]", detail)
+}
+
+func shortenKeyBinds(shortcuts []string) []string {
+	shortened := make([]string, len(shortcuts))
+	copy(shortened, shortcuts)
+	for i, s := range shortcuts {
+		shortened[i] = strings.Replace(s, "ctrl+", "^", 1)
+	}
+	return shortened
 }
