@@ -202,3 +202,23 @@ func (root *Root) moveHfRight() {
 		root.Doc.x += (root.vWidth / 2 * count)
 	}
 }
+
+func (root *Root) setGoLine() {
+	count := root.count
+
+	if count == 0 {
+		root.moveTop()
+	} else {
+		root.moveLine(count - 1)
+	}
+}
+
+func (root *Root) setGoLineOrEnd() {
+	count := root.count
+
+	if count == 0 {
+		root.moveBottom()
+	} else {
+		root.moveLine(count - 1)
+	}
+}
