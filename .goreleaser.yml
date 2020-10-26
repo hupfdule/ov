@@ -49,8 +49,8 @@ nfpms:
     file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"
     builds:
     - ov-linux
-    homepage: https://github.com/noborus/ov
-    maintainer: Noboru Saito <noborusai@gmail.com>
+    homepage: https://github.com/hupfdule/ov
+    maintainer: Nobody <nobody@nowhere.com>
     description: ov is a feature rich terminal pager.
     license: MIT
     formats:
@@ -59,16 +59,16 @@ nfpms:
     bindir: /usr/bin
     epoch: 1
 
-brews:
-  -
-    name: ov
-    github:
-      owner: noborus
-      name: homebrew-tap
-    commit_author:
-      name: noborus
-      email: noborusai@gmail.com
-    homepage: https://github.com/noborus/ov
-    description: ov is a feature rich terminal pager.
-    install:
-      bin.install 'ov'
+    #brews:
+    #  -
+    #    name: ov
+    #    tap:
+    #      owner: hupfdule
+    #      name: homebrew-tap
+    #    commit_author:
+    #      name: hupfdule
+    #      email: nobody@nowhere.com
+    #    homepage: https://github.com/hupfdule/ov
+    #    description: ov is a feature rich terminal pager.
+    #    install:
+    #      bin.install 'ov'
