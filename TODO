@@ -1,0 +1,32 @@
+
+TODO
+----
+- Function for `F` like tail -f
+- Function for `Alt-F`: tail -f, but stop on first occurence of last search
+  pattern
+- Function for `Ctrl-g` to display file info
+- Allow specifying a "window size" for window-wise scrolling (-z, [z], etc.
+  in less) dito for [w]. Also for horizontal movement
+- Allow ESC-Space to jump screenful over end of file
+- [J] and [K] to scroll over the edge
+- Scroll to end of longest displayed line
+- Scroll to end of top line ?
+- Scroll to end of bottom line ?
+- support [<] and Alt-< for [g]? (and [>] and Alt-> for [G])
+- special behaviour if input is stdin (like Alt-G)?
+- hightlight column/row on scroll >1 <width/height
+- hightlight or jump to matching bracket,parentheses, etc.
+- jump to next search should display found text always on top line (like
+  less). ov never scrolls over the end of the file.
+- support count for search (to jump to the nth occurrence)
+- special search modes (^K, ^R, etc.)
+- [&] for only displaying lines matching the search string
+- support commands starting with [:]
+  Maybe even allow user specified commands (providing some placeholders
+  like "path to current file", "current dir", "current content", "current
+  visible lines", etc.)
+- [!] to invoke a shell or shell command
+- support OVOPTIONS or OVOPTS as environment variable
+- command to visually mark certain lines (like a text marker)
+- real readline support for commandline
+- ctrl-alt-binding should be left to the window manager
