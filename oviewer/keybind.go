@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 
 	"github.com/gdamore/tcell"
@@ -101,17 +102,17 @@ func GetKeyBinds(bind map[string][]string) map[string][]string {
 		actionExit:           {"Escape", "q"},
 		actionCancel:         {"ctrl+c"},
 		actionWriteExit:      {"Q"},
-		actionSync:           {"ctrl+l"},
+		actionSync:           {"ctrl+l", "r", "ctrl+r"},
 		actionHelp:           {"h"},
 		actionLogDoc:         {"ctrl+alt+e"},
-		actionMoveDown:       {"Enter", "Down", "ctrl+N"},
-		actionMoveUp:         {"Up", "ctrl+p"},
+		actionMoveDown:       {"Enter", "Down", "ctrl+N", "e", "ctrl+e", "j", "J", "ctrl+j"},
+		actionMoveUp:         {"Up", "ctrl+p", "y", "Y", "ctrl+y", "k", "K", "ctrl+k"},
 		actionMoveTop:        {"Home"},
 		actionMoveBottom:     {"End"},
-		actionMovePgUp:       {"PageUp", "ctrl+b"},
-		actionMovePgDn:       {"PageDown", "ctrl+v"},
-		actionMoveHfUp:       {"ctrl+u"},
-		actionMoveHfDn:       {"ctrl+d"},
+		actionMovePgUp:       {"PageUp", "b", "ctrl+b", "alt+v"},
+		actionMovePgDn:       {"PageDown", "ctrl+v", "Space", "alt+Space", "f", "z"},
+		actionMoveHfUp:       {"u", "ctrl+u"},
+		actionMoveHfDn:       {"d", "ctrl+d"},
 		actionMoveLeft:       {"left"},
 		actionMoveRight:      {"right"},
 		actionMoveHfLeft:     {"ctrl+left"},
@@ -160,24 +161,50 @@ func (root *Root) setKeyBind(keyBind map[string][]string) error {
 				return fmt.Errorf("%w [%s] for %s: %s", ErrFailedKeyBind, k, a, err)
 			}
 			if key == tcell.KeyRune {
-				c.SetRune(mod, ch, wrapEventHandler(handler))
+				c.SetRune(mod, ch, root.wrapEventHandler(handler))
 			} else {
-				c.SetKey(mod, key, wrapEventHandler(handler))
+				c.SetKey(mod, key, root.wrapEventHandler(handler))
 			}
 		}
 	}
+
+	for i := 0; i < 10; i++ {
+		mod, key, ch, err := cbind.Decode(strconv.Itoa(i))
+		if err != nil {
+			return fmt.Errorf("%w [%d] for %s: %s", ErrFailedKeyBind, i, "count", err)
+		}
+		if key == tcell.KeyRune {
+			c.SetRune(mod, ch, root.wrapCountHandler(i))
+		} else {
+			c.SetKey(mod, key, root.wrapCountHandler(i))
+		}
+	}
+
 	return nil
 }
 
-func wrapEventHandler(f func()) func(_ *tcell.EventKey) *tcell.EventKey {
+func (root *Root) wrapCountHandler(i int) func(_ *tcell.EventKey) *tcell.EventKey {
+	return func(_ *tcell.EventKey) *tcell.EventKey {
+		root.addToCount(i)
+		return nil
+	}
+}
+
+func (root *Root) wrapEventHandler(f func()) func(_ *tcell.EventKey) *tcell.EventKey {
 	return func(_ *tcell.EventKey) *tcell.EventKey {
 		f()
+		root.resetCount()
 		return nil
 	}
 }
 
 func (root *Root) keyCapture(ev *tcell.EventKey) bool {
-	root.keyConfig.Capture(ev)
+	h := root.keyConfig.Capture(ev)
+	// FIXME: This only works because all handlers return 'nil' whereas
+	// KeyEvents without a handler will return a KeyEvent
+	if h != nil {
+		root.resetCount()
+	}
 	return true
 }
 

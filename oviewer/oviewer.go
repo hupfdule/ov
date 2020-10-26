@@ -79,6 +79,9 @@ type Root struct {
 
 	// cancelKeys represents the cancellation key string.
 	cancelKeys []string
+
+	// count for a command
+	count int
 }
 
 type lineNumber struct {
@@ -138,7 +141,7 @@ var (
 	// HeaderStyle represents the style of the header.
 	HeaderStyle = tcell.StyleDefault.Bold(true)
 	// ColorAlternate represents alternating colors.
-	ColorAlternate = tcell.ColorGray
+	ColorAlternate = tcell.ColorDefault
 	// OverStrikeStyle represents the overstrike style.
 	OverStrikeStyle = tcell.StyleDefault.Bold(true)
 	// OverLineStyle represents the overline underline style.
@@ -711,6 +714,22 @@ func (root *Root) reRead() {
 	}
 	root.Doc.ClearCache()
 	root.viewSync()
+
+func (root *Root) addToCount(i int) {
+	root.count = root.count*10 + i
+	root.setMessage(fmt.Sprintf("%d", root.count))
+}
+
+func (root *Root) resetCount() {
+	root.count = 0
+}
+
+func (root *Root) countOr(i int) int {
+	if root.count != 0 {
+		return root.count
+	} else {
+		return 1
+	}
 }
 
 func max(a, b int) int {
